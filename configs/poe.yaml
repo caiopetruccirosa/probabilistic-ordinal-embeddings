@@ -1,0 +1,22 @@
+data:
+  dataset_name: adience
+  n_age_classes: 8
+
+model:
+  head_type: classification
+  backbone_type: vgg16_bn
+  backbone_imagenet_pretrained: true
+  use_poe: true
+
+training:
+  batch_size: 32
+  max_epochs: 50
+  learning_rate: 0.0001
+  learning_rate_decay: 0.1
+  learning_rate_decay_epoch: [30]
+  poe_config:
+    distance_metric: jdistance
+    alpha: 1e-5
+    beta: 1e-4
+    delta: 5
+    t_monte_carlo_samples: 50
