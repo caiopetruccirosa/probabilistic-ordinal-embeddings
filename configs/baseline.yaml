@@ -6,10 +6,11 @@ model:
   head_type: classification
   backbone_type: vgg16_bn
   backbone_imagenet_pretrained: true
+  use_poe: false
 
 training:
   batch_size: 32
-  max_epochs: 50
+  n_epochs: 50
   learning_rate: 0.0001
   learning_rate_decay: 0.1
   learning_rate_decay_epoch: [30]

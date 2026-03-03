@@ -12,3 +12,5 @@ tqdm
 Pillow
 ipykernel
 scikit-learn
+rich
+wandb

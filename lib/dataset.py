@@ -15,7 +15,7 @@ class AdienceAgeEstimationDataset(Dataset):
     def __getitem__(self, idx: int) -> tuple[torch.Tensor, int]:
         sample = self.annotations[idx]
 
-        img_filepath = os.path.join(self.data_root_dir, sample['user_id'], sample['original_image'])
+        img_filepath = os.path.join(self.data_root_dir, sample['user_id'], f"landmark_aligned_face.{sample['face_id']}.{sample['original_image']}")
         age_label    = sample['age']
 
         img = Image.open(img_filepath)

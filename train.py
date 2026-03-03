@@ -23,9 +23,9 @@ if __name__ == '__main__':
                             help='Dataset annotations CSV file (e.g. fold_0_data.txt).')
     arg_parser.add_argument('--device-type', type=str, choices=['cpu', 'gpu', 'mps'], required=False,
                             help='Type of device to use (e.g. "cpu", "gpu", or "mps").')
-    arg_parser.add_argument('--n-dataloader-workers', type=int, default=4, required=False,
+    arg_parser.add_argument('--n-dataloader-workers', type=int, default=1, required=False,
                             help='Number of worker processes per dataloader.')
-    arg_parser.add_argument('--wandb-project', type=str, default='facial-age-estimation-benchmark', required=False,
+    arg_parser.add_argument('--wandb-project', type=str, default='probabilistic-ordinal-embeddings', required=False,
                             help='Weights & Biases project name for logging.')
     arg_parser.add_argument('--wandb-mode', type=str, choices=['online', 'offline', 'disabled'], default='online', required=False,
                             help='Weights & Biases run mode: "online" to sync, "offline" to log locally, "disabled" to turn off logging.')

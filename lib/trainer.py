@@ -51,16 +51,16 @@ class AgeEstimationLitModule(L.LightningModule):
             embeddings_mean, embeddings_log_var = poe
             head_loss, vib_loss, ordinal_loss, loss = self.loss_fn(logits, embeddings_mean, embeddings_log_var, targets)
 
-            self.log('train/partial_head_loss', head_loss.item(), on_epoch=True, on_step=False, prog_bar=False, logger=True)
-            self.log('train/partial_vib_loss', vib_loss.item(), on_epoch=True, on_step=False, prog_bar=False, logger=True)
-            self.log('train/partial_ord_loss', ordinal_loss.item(), on_epoch=True, on_step=False, prog_bar=False, logger=True)
+            self.log('train/partial_head_loss', head_loss.item(), on_epoch=True, on_step=False, prog_bar=True, logger=True)
+            self.log('train/partial_vib_loss', vib_loss.item(), on_epoch=True, on_step=False, prog_bar=True, logger=True)
+            self.log('train/partial_ord_loss', ordinal_loss.item(), on_epoch=True, on_step=False, prog_bar=True, logger=True)
         else:
             loss = self.loss_fn(logits, targets)
 
         acc = accuracy_metric(ages, targets)
 
-        self.log('train/loss', loss.item(), on_epoch=True, on_step=False, prog_bar=False, logger=True)
-        self.log('train/accuracy', acc, on_epoch=True, on_step=False, prog_bar=False, logger=True)
+        self.log('train/loss', loss.item(), on_epoch=True, on_step=False, prog_bar=True, logger=True)
+        self.log('train/accuracy', acc, on_epoch=True, on_step=False, prog_bar=True, logger=True)
         
         return loss
 
@@ -74,16 +74,16 @@ class AgeEstimationLitModule(L.LightningModule):
             embeddings_mean, embeddings_log_var = poe
             head_loss, vib_loss, ordinal_loss, loss = self.loss_fn(logits, embeddings_mean, embeddings_log_var, targets)
 
-            self.log('val/partial_head_loss', head_loss.item(), on_epoch=True, on_step=False, prog_bar=False, logger=True)
-            self.log('val/partial_vib_loss', vib_loss.item(), on_epoch=True, on_step=False, prog_bar=False, logger=True)
-            self.log('val/partial_ord_loss', ordinal_loss.item(), on_epoch=True, on_step=False, prog_bar=False, logger=True)
+            self.log('val/partial_head_loss', head_loss.item(), on_epoch=True, on_step=False, prog_bar=True, logger=True)
+            self.log('val/partial_vib_loss', vib_loss.item(), on_epoch=True, on_step=False, prog_bar=True, logger=True)
+            self.log('val/partial_ord_loss', ordinal_loss.item(), on_epoch=True, on_step=False, prog_bar=True, logger=True)
         else:
             loss = self.loss_fn(logits, targets)
 
         acc = accuracy_metric(ages, targets)
 
-        self.log('val/loss', loss.item(), on_epoch=True, on_step=False, prog_bar=False, logger=True)
-        self.log('val/accuracy', acc, on_epoch=True, on_step=False, prog_bar=False, logger=True)
+        self.log('val/loss', loss.item(), on_epoch=True, on_step=False, prog_bar=True, logger=True)
+        self.log('val/accuracy', acc, on_epoch=True, on_step=False, prog_bar=True, logger=True)
 
         return loss
 
@@ -97,7 +97,7 @@ class AgeEstimationLitModule(L.LightningModule):
             lr=self.config['training']['learning_rate'],
         )
     
-        lr_decay_epochs = [int(i) for i in self.config['training']['learning_rate_decay_epoch']] + [int(np.inf)]
+        lr_decay_epochs = [int(i) for i in self.config['training']['learning_rate_decay_epoch']] + [np.inf]
         lr_scheduler = optim.lr_scheduler.MultiStepLR(
             optimizer=optimizer,
             gamma=self.config['training']['learning_rate_decay'],
@@ -150,7 +150,8 @@ class AdienceAgeEstimationDataModule(L.LightningDataModule):
 
     def setup(self, stage: str):
         if stage == 'fit':
-            annotations = pd.read_csv(self.annotations_filepath).to_dict(orient='records')
+            annotations = pd.read_csv(self.annotations_filepath, sep='\t').to_dict(orient='records')
+
             train_annotations, val_annotations = train_test_split(
                 annotations,
                 train_size=self.train_ratio,
